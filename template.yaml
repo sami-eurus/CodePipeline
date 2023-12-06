@@ -1,48 +1,12 @@
 AWSTemplateFormatVersion: '2010-09-09'
 
 Resources:
-  MyIAMPolicy:
-    Type: AWS::IAM::Policy
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
     Properties:
-      PolicyName: samiPolicy
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Action:
-              - 's3:GetObject'
-            Resource: '*'
-      Roles:
-        - !Ref AWSCodePipelineServiceRole
-
-  AWSCodePipelineServiceRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: AWSCodePipelineServiceRole
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: codepipeline.amazonaws.com
-            Action: sts:AssumeRole
-
-  StackSetRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: StackSetRole
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: cloudformation.amazonaws.com
-            Action: sts:AssumeRole
-      Policies:
-        - PolicyName: StackSetRolePolicy
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action: iam:GetRole
-                Resource: !GetAtt AWSCodePipelineServiceRole.Arn
+      GroupDescription: MySecurityGroupDescription
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0

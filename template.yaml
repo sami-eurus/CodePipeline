@@ -26,3 +26,23 @@ Resources:
             Principal:
               Service: codepipeline.amazonaws.com
             Action: sts:AssumeRole
+
+  StackSetRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: StackSetRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: cloudformation.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: StackSetRolePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: iam:GetRole
+                Resource: !GetAtt AWSCodePipelineServiceRole.Arn

@@ -4,7 +4,7 @@ Resources:
   MyIAMPolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: MyPolicy
+      PolicyName: samiPolicy
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -13,4 +13,16 @@ Resources:
               - 's3:GetObject'
             Resource: '*'
       Roles:
-        - !Ref AWSCodePipelineServiceRole-us-east-1-sami-test-pipeline
+        - !Ref AWSCodePipelineServiceRole
+
+  AWSCodePipelineServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: AWSCodePipelineServiceRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codepipeline.amazonaws.com
+            Action: sts:AssumeRole
